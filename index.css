@@ -1,0 +1,18 @@
+h1{
+ font-size: 75px;
+ margin: 0;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: left;
+}

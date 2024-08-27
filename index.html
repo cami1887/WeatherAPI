@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <h1 class="title">Weather Kitty</h1>
+        <div class="input-container">
+            <!-- inputs for location and time -->
+            <select name="country" class="country">
+                <option value="United States">United States</option>
+                <option value="Canada">Canada</option>
+                <option value="United Kingdom">United Kingdom</option>
+            </select>
+            <select class="region"></select>
+            <select class="city"></select>
+        </div>
+        <p class="time">Time: 05:00 pm</p>
+    </header>
+    
+    <main>
+    <section class="window-container">
+            <img src="WindowGroup.svg" height="500" width="500">
+    </section>
+
+    <section class="information-container">
+        
+        <div class="UV-index">
+           <img> 
+           <p class="UV-description">This is the description of the UV Index</p>
+        </div>
+        <div class="clothing-recommendation">
+            <img> 
+            <p class="clothing-description">This is where clothing recommendations go</p>
+        </div>
+        <div class="mental-health">
+            <img> 
+            <p class="mental-health-description">This is where it explains how the weather might affect your mood</p>
+        </div>
+        <div class="dog-walking">
+            <img> 
+            <p class="dog-walking-description">This is where you can find if its too hot to walk your dog</p>
+        </div>
+        <div class="cosmic-events">
+            <img> 
+            <p class="cosmic-events-description">This is where you'll see what cosmic events are happening</p>
+        </div>
+    </section>
+</main>
+<script src="index.js"></script>
+</body>
+</html>
