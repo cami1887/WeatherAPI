@@ -11,6 +11,7 @@ const dogWalkingDescription = document.querySelector('.dog-walking-description')
 const cosmicEventDescription = document.querySelector('.cosmic-events-description');
 const statesArray = Object.keys(usInfo).sort();
 let locationParameter = '';
+let stateSelect = '';
 
 fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+'Alabama Auburn').then((response) => response.json()).then((data)=> console.log(data));
 
@@ -28,13 +29,12 @@ function displayCities(e) {
     while (cityInput.firstChild) {
         cityInput.removeChild(cityInput.firstChild);
     }
-    let state = e.target.value;
-    if (state != 'select') {
+    stateSelect = e.target.value;
+    if (stateSelect != 'select') {
         let city = Object.values(Object.values(usInfo));
         let states = Object.keys(usInfo);
-        let index = states.indexOf(state)
+        let index = states.indexOf(stateSelect)
         let allCities = city[index]?.sort();
-        let weatherInfo = [];
         allCities?.forEach((city) => {
             const option = document.createElement("option");
             option.textContent = city;
@@ -46,12 +46,8 @@ function displayCities(e) {
         .then((response) => 
             response.json())
         .then((data)=> 
-            displayText(data.current.temp_f, data.current.temp_c)
-            // weatherInfo = [data.current.temp_f, data.current.temp_c]
-            // console.log(Object.entries(data.current.temp_c))
+            processData(data.current.temp_f, data.current.uv, data.current.cloud, data.current.precip_in, data.current.wind_mph, data.current.condition.text)
         )
-        // testFuncton(weatherInfo)
-        // console.log(weatherInfo)
     }
 
     else {
@@ -59,14 +55,22 @@ function displayCities(e) {
     }
 }
 
-function displayText(f, c) {
-    console.log(f,c)
+function processData(temp, uv, cloud, precip, wind, condition) {
+    console.log("uv: " + uv, "temp: "+ temp, "cloud cover: "+ cloud, "precipitation: "+ precip, "wind: "+ wind, "condition: "+ condition)
+    if (temp){
+
+    }
+
 
 }
 
 function displayWeather(e) {
     locationParameter = e.target.value;
-    fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+locationParameter).then((response) => response.json()).then((data)=> console.log(data));
+    fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+locationParameter+' '+stateSelect)
+        .then((response) => response.json())
+        .then((data)=> 
+            processData(data.current.temp_f, data.current.uv, data.current.cloud, data.current.precip_in, data.current.wind_mph, data.current.condition.text)
+    );
 }
 
 
