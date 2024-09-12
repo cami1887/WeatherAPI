@@ -11,15 +11,12 @@
         <h1 class="title">Weather Kitty</h1>
         <div class="input-container">
             <!-- inputs for location and time -->
-            <select name="country" class="country">
-                <option value="United States">United States</option>
-                <option value="Canada">Canada</option>
-                <option value="United Kingdom">United Kingdom</option>
+            <select id="state">
+                <option value='select'>Select State</option>
             </select>
-            <select class="region"></select>
-            <select class="city"></select>
+            <select id="city"></select>
         </div>
-        <p class="time">Time: 05:00 pm</p>
+        <p id="time">Time: 05:00 pm</p>
     </header>
     
     <main>
@@ -51,6 +48,7 @@
         </div>
     </section>
 </main>
-<script src="index.js"></script>
+<script type="module" src="index.js"></script>
+<script type="module" src="US_States_and_Cities.js"></script>
 </body>
 </html>
