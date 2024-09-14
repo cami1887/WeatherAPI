@@ -13,6 +13,12 @@ const statesArray = Object.keys(usInfo).sort();
 let locationParameter = '';
 let stateSelect = '';
 
+// let temperature = 0;
+// let condition = '';
+// let cloudCover = 0;
+// let precipitation = 0;
+// let UVIndex = 0;
+
 fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+'Alabama Auburn').then((response) => response.json()).then((data)=> console.log(data));
 
 statesArray.forEach((state) => {
@@ -57,9 +63,24 @@ function displayCities(e) {
 
 function processData(temp, uv, cloud, precip, wind, condition) {
     console.log("uv: " + uv, "temp: "+ temp, "cloud cover: "+ cloud, "precipitation: "+ precip, "wind: "+ wind, "condition: "+ condition)
-    if (temp){
-
+    switch(uv) {
+        case 1 || 2:
+          console.log(allDescriptions.uvIndex[0]);
+          uvDescription.innerText = allDescriptions.uvIndex[0]
+          break;
+        case 3 || 4 || 5 || 6 || 7:
+          console.log(allDescriptions.uvIndex[1])
+          uvDescription.innerText = allDescriptions.uvIndex[1]
+          break;
+        case uv >= 8:
+            console.log(allDescriptions.uvIndex[1]);
+            uvDescription.innerText = allDescriptions.uvIndex[2]
+        break;
+        default:
+          console.log(uv)
     }
+
+
 
 
 }
@@ -76,8 +97,10 @@ function displayWeather(e) {
 
 const allDescriptions = {
     uvIndex: [
-        "Low UV Index. No need to worry about sun burns!", 
-        "Maybe just a little bit of sunscreen is in order...just a little"],
+        "UV index is low, feel free to enjoy the outdoors with minimal protection!",
+        "There is medium sun exposure risk. Avoid the midday sun and wear sunscreen!",
+        "There is a high risk of sun exposure. Please avoid the outdoors, especially the midday sun."
+    ],
     clothing: [
         "With a high chance of rain and cool temperatures, make sure you layer up!", 
         "Its hot with a high UV index, wear airy and protective clothing. A hat and sunglasses couldn't hurt either :)"],
