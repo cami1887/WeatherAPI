@@ -4,51 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./styles/index.css">
 </head>
 <body>
     <header>
         <h1 class="title">Weather Kitty</h1>
         <div class="input-container">
-            <!-- inputs for location and time -->
-            <select id="state">
-                <option value='select'>Select State</option>
-            </select>
-            <select id="city"></select>
-        </div>
-        <p id="time">Time: 05:00 pm</p>
+            <div>
+                <select id="state">
+                    <option value='select'>Select State</option>
+                </select>
+                <select id="city"></select>
+            </div>
+            <p id="time">Last Updated: 05:00 pm</p>
+        </div>    
     </header>
     
     <main>
-    <section class="window-container">
-            <img src="WindowGroup.svg" height="500" width="500">
+        
+    <section class="window-container" position="relative">
+        <iframe src="./sky-background/background.html"></iframe>
+        <img src="./images/updated-window.svg"/>
     </section>
 
     <section class="information-container">
-        
-        <div class="UV-index">
-           <img> 
-           <p class="UV-description">This is the description of the UV Index</p>
+        <div class="UV-index description-container">
+           <img src="./images/sun-icon.svg" height="45" width="45">
+           <p class="UV-description description">This is the description of the UV Index</p>
         </div>
-        <div class="clothing-recommendation">
-            <img> 
-            <p class="clothing-description">This is where clothing recommendations go</p>
+        <div class="clothing-recommendation description-container">
+            <img src="./images/clothing-icon.svg" height="45" width="45">
+            <p class="clothing-description description">This is where clothing recommendations go</p>
         </div>
-        <div class="mental-health">
-            <img> 
-            <p class="mental-health-description">This is where it explains how the weather might affect your mood</p>
+        <div class="mental-health description-container">
+            <img src="./images/mood-icon.svg" height="45" width="45"> 
+            <p class="mental-health-description description">This is where it explains how the weather might affect your mood</p>
         </div>
-        <div class="dog-walking">
-            <img> 
-            <p class="dog-walking-description">This is where you can find if its too hot to walk your dog</p>
+        <div class="dog-walking description-container">
+            <img src="./images/pawprint.svg" height="45" width="45">  
+            <p class="dog-walking-description description">This is where you can find if its too hot to walk your dog</p>
         </div>
-        <div class="cosmic-events">
-            <img> 
-            <p class="cosmic-events-description">This is where you'll see what cosmic events are happening</p>
+        <div class="cosmic-events description-container">
+            <img src="./images/moonphase.svg" height="45" width="45"> 
+            <p class="cosmic-events-description description">This is where you'll see what cosmic events are happening</p>
         </div>
     </section>
 </main>
 <script type="module" src="index.js"></script>
-<script type="module" src="US_States_and_Cities.js"></script>
+<script type="module" src="./data/US_States_and_Cities.js"></script>
 </body>
 </html>

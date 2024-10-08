@@ -1,0 +1,101 @@
+@font-face {
+    font-family: titleFont;
+    src: url(../fonts/Wedges.ttf);
+}
+
+body {
+    background-color:#FFFAEE;
+    font-family: titleFont;
+}
+
+h1{
+    font-size: 60px;
+    margin: 0;
+    color: #74A9E5;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    text-align: center;
+    vertical-align: middle;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    vertical-align: middle;
+    text-align: left;
+}
+
+iframe {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+    height: 290px;
+    width: 250px;
+}
+
+#time {
+    margin:0;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.window-container {
+    position: relative;
+    margin: auto;
+    height: 450px;
+    width: 450px;
+}
+
+.window-container img {
+    position: absolute;
+    height: 450px;
+    width: 450px;
+    right: 0;
+}
+
+.information-container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: solid 1px #74A9E5;
+    border-radius: 20px;
+    height: 400px;
+    text-align: center;
+    padding: 15px 20px;
+}
+
+.description-container {
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.description {
+    width: 275px;
+    font-size: 13px;
+}
+
+#state, #city{
+    border: none;
+    background-color: #FFFAEE;
+    font-family: titleFont;
+    font-size: 16px;
+}
+
+
+
+#state:focus-visible, #city:focus-visible{
+    outline: none;
+}

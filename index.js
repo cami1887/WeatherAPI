@@ -1,5 +1,5 @@
 
-import { usInfo } from "./US_States_and_Cities.js";
+import { usInfo } from "./data/US_States_and_Cities.js";
 const APIKey = '3792aefde03b401da81232716240808';
 const locationInput = document.getElementById('state');
 const cityInput = document.getElementById('city');
@@ -13,13 +13,8 @@ const statesArray = Object.keys(usInfo).sort();
 let locationParameter = '';
 let stateSelect = '';
 
-// let temperature = 0;
-// let condition = '';
-// let cloudCover = 0;
-// let precipitation = 0;
-// let UVIndex = 0;
-
 fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+'Alabama Auburn').then((response) => response.json()).then((data)=> console.log(data));
+
 
 statesArray.forEach((state) => {
     const option = document.createElement("option");
@@ -30,6 +25,21 @@ statesArray.forEach((state) => {
 
 locationInput.addEventListener('input', displayCities);
 cityInput.addEventListener('input', displayWeather);
+
+function displayWeather(e) {
+    locationParameter = e.target.value;
+    fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+locationParameter+' '+stateSelect)
+        .then((response) => 
+            response.json())
+            .then((data)=> 
+                processData(data.current.temp_f, data.current.uv, data.current.cloud, data.current.precip_in, data.current.wind_mph, data.current.condition.text)
+    );
+    // fetch('http://api.weatherapi.com/v1/astronomy.json?key='+APIKey+'&q='+allCities[0])
+    //     .then((response) => 
+    //         response.json())
+    //     .then((data)=> 
+    //         processCosmicEvent(data.astronomy.astro.moon_phase))
+}
 
 function displayCities(e) {
     while (cityInput.firstChild) {
@@ -52,23 +62,46 @@ function displayCities(e) {
         .then((response) => 
             response.json())
         .then((data)=> 
-            processData(data.current.temp_f, data.current.uv, data.current.cloud, data.current.precip_in, data.current.wind_mph, data.current.condition.text)
+            processData(data.current.temp_f, data.current.uv, data.current.cloud, data.current.precip_in, data.current.wind_mph, data.current.condition.text, data.location.localtime)
         )
+    fetch('http://api.weatherapi.com/v1/astronomy.json?key='+APIKey+'&q='+allCities[0])
+        .then((response) => 
+            response.json())
+        .then((data)=> 
+            processCosmicEvent(data.astronomy.astro.moon_phase))
     }
-
     else {
         return false;
     }
 }
 
-function processData(temp, uv, cloud, precip, wind, condition) {
-    console.log("uv: " + uv, "temp: "+ temp, "cloud cover: "+ cloud, "precipitation: "+ precip, "wind: "+ wind, "condition: "+ condition)
-
+function processData(temp, uv, cloud, precip, wind, condition, time) {
+    console.log("uv: " + uv, "temp: "+ temp, "cloud cover: "+ cloud, "precipitation: "+ precip, "wind: "+ wind, "condition: "+ condition, "Regular Time: " + time)
+    processTime(time);
     processUv(uv);
     processDogWalking(temp);
     processClothing(temp, precip);
     processMentalHealth(cloud, wind, precip);
-    processCosmicEvent()
+}
+
+function processTime(time) {
+    let currentTime = new Date(time);
+    let hours = currentTime.getHours();
+    let minutes = currentTime.getMinutes();
+    let ampm = "";
+    if (hours < 12) {
+        ampm = "AM";
+    }
+    if (hours >= 12) {
+        hours -= 12;
+        ampm = "PM";
+    }
+    timeOutput.innerText = "Last Updated: " + hours + ":" + minutes + " " + ampm;
+}
+
+function processCosmicEvent(moonPhase) {
+    console.log(moonPhase);
+    cosmicEventDescription.innerText = "It's a "+ moonPhase + " tonight!"
 }
 
 function processClothing(temp, precipitation) {
@@ -79,16 +112,16 @@ function processClothing(temp, precipitation) {
     if (temp >= 25 && temp <= 44) {
         clothingDescription.innerText = "Its a chilly out right now. For warmth, be sure you at least wear a light/medium coat!"
     } 
-    if (temp >= 45 && temp <= 64) {
+    if (temp > 44 && temp <= 64) {
         clothingDescription.innerText = "It's cool right now. A singe fleece layer for warmth should be enough."
     }
-    if (temp >= 65 && temp <=79) {
+    if (temp > 64 && temp <=79) {
         clothingDescription.innerText = "Its gonna be a comfortable day! A tee and pants will be plenty."
     }
-    if (temp >= 80 && temp <= 99) {
+    if (temp > 79 && temp <= 99) {
         clothingDescription.innerText = "Its gonna be warm today, wear loose and airy clothing."
     }
-    if (temp >= 100) {
+    if (temp > 99) {
         clothingDescription.innerText = "Its a scorcher! Make sure you wear light and airy clothing. Shorts and a tank may be in order. It's especially important to stay hydrated!"
     }
 
@@ -136,7 +169,7 @@ function processMentalHealth(cloud, wind, precipitation) {
     if (wind > 12 && wind <= 24) {
         total += 4;
     }
-    if (wind > 25) {
+    if (wind > 24) {
         total += 5;
     }
 
@@ -152,23 +185,21 @@ function processMentalHealth(cloud, wind, precipitation) {
     if (precipitation > 0.41 && precipitation <= .98) {
         total += 4;
     }
-    if (precipitation < .98) {
+    if (precipitation > .98) {
         total += 5;
     }
-
+    console.log(total)
     if (total >= 3 && total < 7) {
-
+        mentalHealthDescription.innerText = allDescriptions.mentalHealth[0];
+        
     }
     if (total >= 7 && total < 11) {
-
+        mentalHealthDescription.innerText = allDescriptions.mentalHealth[1]
     }
-    if (total >= 11)
+    if (total >= 11) {
+        mentalHealthDescription.innerText = allDescriptions.mentalHealth[2]
+    }
 }
-
-function processCosmicEvent() {
-
-}
-
 
 function processUv(uv) {
     if (uv === 1 || uv === 2) {
@@ -205,15 +236,6 @@ function processDogWalking(temperature) {
     }
 }
 
-function displayWeather(e) {
-    locationParameter = e.target.value;
-    fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+locationParameter+' '+stateSelect)
-        .then((response) => response.json())
-        .then((data)=> 
-            processData(data.current.temp_f, data.current.uv, data.current.cloud, data.current.precip_in, data.current.wind_mph, data.current.condition.text)
-    );
-}
-
 
 const allDescriptions = {
     uvIndex: [
@@ -221,25 +243,16 @@ const allDescriptions = {
         "There is medium sun exposure risk. Avoid the midday sun and wear sunscreen!",
         "There is a high risk of sun exposure. Please avoid the outdoors, especially the midday sun."
     ],
-    // clothing: [
-    //     "With a high chance of rain and cool temperatures, make sure you layer up!", 
-    //     "Its hot with a high UV index, wear airy and protective clothing. A hat and sunglasses couldn't hurt either :)"],
-    // mentalHealth: [
-    //     "Its a sunny day today! The weather should not negatively affect your mood.", 
-    //     "It's a gloomy day today. Time to break out a warm cup of tea and move your body a little to make up for the lack of viamin D!"],
+    mentalHealth: [
+        "The weather is nice right now! Enjoy the day with minimal negative effects from the weather.", 
+        "The current weather conditions may have a neutral effect on your mood. If you're prone to depression or SAD make sure you get out of the house and move your body!",
+        "The weather will likely have a negative impact on your mood and that's okay. Maybe its best to spend time with loved ones indoors over a nice warm meal and drink"],
     dogWalking: [
         "Most dogs are at risk of heat stroke when temperatures are above 89°F, and you should avoid walking your dog when it's 90°F or hotter. Some dogs may be at risk even in temperatures as low as 70°F–77°F.",
         "The weather is in perfect conditon to take your pup for a walk right about now!", 
         "Temperatures below 32°F are too cold to keep your dog outside for long."],
-    cosmicEvent: [
-        "No cosmic events where you're located :(", 
-        "There's a meteor shower, but it may be too cloudy to see :("
-    ]
 }
 
 
 uvDescription.innerText = allDescriptions.uvIndex[1];
-// clothingDescription.innerText = allDescriptions.clothing[1];
-// mentalHealthDescription.innerText = allDescriptions.mentalHealth[1];
 dogWalkingDescription.innerText = allDescriptions.dogWalking[1];
-cosmicEventDescription.innerText = allDescriptions.cosmicEvent[1];
