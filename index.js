@@ -9,15 +9,16 @@ const clothingDescription = document.querySelector('.clothing-description');
 const mentalHealthDescription = document.querySelector('.mental-health-description');
 const dogWalkingDescription = document.querySelector('.dog-walking-description');
 const cosmicEventDescription = document.querySelector('.cosmic-events-description');
-const statesArray = Object.keys(usInfo).sort();
+let statesArray = Object.keys(usInfo).sort();
 let locationParameter = '';
 let stateSelect = '';
 
+
+//put into a function thats called at the beginning so it doesnt get rerun at every refresh
 fetch('http://api.weatherapi.com/v1/current.json?key='+APIKey+'&q='+'Alabama Auburn').then((response) => response.json()).then((data)=> console.log(data));
 
-
-statesArray.forEach((state) => {
-    const option = document.createElement("option");
+statesArray?.forEach((state) => {
+    let option = document.createElement("option");
     option.textContent = state;
     option.setAttribute("value", state);
     locationInput.appendChild(option);
@@ -25,6 +26,8 @@ statesArray.forEach((state) => {
 
 locationInput.addEventListener('input', displayCities);
 cityInput.addEventListener('input', displayWeather);
+
+
 
 function displayWeather(e) {
     locationParameter = e.target.value;
@@ -34,11 +37,6 @@ function displayWeather(e) {
             .then((data)=> 
                 processData(data.current.temp_f, data.current.uv, data.current.cloud, data.current.precip_in, data.current.wind_mph, data.current.condition.text)
     );
-    // fetch('http://api.weatherapi.com/v1/astronomy.json?key='+APIKey+'&q='+allCities[0])
-    //     .then((response) => 
-    //         response.json())
-    //     .then((data)=> 
-    //         processCosmicEvent(data.astronomy.astro.moon_phase))
 }
 
 function displayCities(e) {
